@@ -1,0 +1,36 @@
+---
+# tasks file for user_create
+- hosts: localhost
+  tasks:
+  - name: Fetch available users
+    getent:
+      database: passwd
+    register: users_res
+
+  - set_fact:
+      users_available: "{{ users_res }}"
+
+  - debug:
+      msg: "{{ users_res }}"
+
+  - name: Remove .lock files
+    shell: 'rm -rvf /etc/.pwd.lock'
+    register: remove_lock
+
+  - name: Create User
+    ansible.builtin.user:
+      name: "{{ user_names }}"
+      #"{{ item }}"
+      #group: root
+      #create_home: true
+      #append: yes
+      #home: "/home/ansible"
+      state: present
+      #become_user: ansible
+      #    with_items: "{{ user_names }}"
+    register: users_out
+    when:
+      - '"{{ user_names }}" not in users_available'
+      - 'remove_lock is success'
+  - debug:
+      msg: "{{ users_out }}"
