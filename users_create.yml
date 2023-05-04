@@ -10,8 +10,8 @@
   - set_fact:
       users_available: "{{ users_res }}"
 
-  - debug:
-      msg: "{{ users_res }}"
+  #- debug:
+  #    msg: "{{ users_res }}"
 
   - name: Remove .lock files
     shell: 'rm -rvf /etc/.pwd.lock'
@@ -30,7 +30,7 @@
       #    with_items: "{{ user_names }}"
     register: users_out
     when:
-      - '"{{ user_names }}" not in users_available'
+      #- '"{{ user_names }}" not in users_available'
       - 'remove_lock is success'
   - debug:
       msg: "{{ users_out }}"
