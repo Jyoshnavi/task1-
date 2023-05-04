@@ -1,6 +1,6 @@
 ---
 # tasks file for user_create
-- hosts: localhost
+- hosts: linux
   tasks:
   - name: Fetch available users
     getent:
